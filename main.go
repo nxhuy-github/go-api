@@ -114,7 +114,6 @@ func main() {
 	secret_demo := getEnv("secret_demo", "UNDEFINED")
 
 	// Starting Server
-	fmt.Printf("Starting server at port 8000 in %v environment\n", env)
-	fmt.Printf("Environment Variables: %v", secret_demo)
+	fmt.Printf("Starting server at port 8000 in %v environment with the secret %v\n", env, secret_demo)
 	log.Fatal(http.ListenAndServe(":8000", r))
 }
