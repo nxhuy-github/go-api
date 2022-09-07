@@ -6,6 +6,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/gorilla/mux"
@@ -86,6 +87,14 @@ func updateMovie(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func getEnv(key, defaultValue string) string {
+	value := os.Getenv(key)
+	if len(value) == 0 {
+		return defaultValue
+	}
+	return value
+}
+
 func main() {
 	r := mux.NewRouter()
 
@@ -100,7 +109,12 @@ func main() {
 	r.HandleFunc("/movies/{id}", updateMovie).Methods("PUT")
 	r.HandleFunc("/movies/{id}", deleteMovie).Methods("DELETE")
 
+	// Get Environment Variables
+	env := getEnv("ENV", "UNDEFINED")
+	secret_demo := getEnv("secret_demo", "UNDEFINED")
+
 	// Starting Server
-	fmt.Printf("Starting server at port 8000\n")
+	fmt.Printf("Starting server at port 8000 in %v environment\n", env)
+	fmt.Printf("Environment Variables: %v", secret_demo)
 	log.Fatal(http.ListenAndServe(":8000", r))
 }
